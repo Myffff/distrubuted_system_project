@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Camera Streaming</title>
+  </head>
+  <body>
+    <button id="start">Start Camera</button>
+    <button id="stop">Stop Camera</button>
+    <br/>
+    <img id="video" src=""/>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.min.js"></script>
+    <script type="text/javascript">
+      const socket = io();
+      const video = document.getElementById('video');
+      const startButton = document.getElementById('start');
+      const stopButton = document.getElementById('stop');
+
+      startButton.addEventListener('click', () => {
+        socket.connect();
+      });
+
+      stopButton.addEventListener('click', () => {
+        socket.disconnect();
+        video.src = '';
+      });
+
+      socket.on('image', (imageData) => {
+        let data = imageData.image
+        video.src = 'data:image/jpeg;base64,' + data;
+      });
+    </script>
+  </body>
+</html>
